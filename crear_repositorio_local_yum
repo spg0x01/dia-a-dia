@@ -1,0 +1,45 @@
+Nota: Es necesario usar el disco de la versión del sistema operativo que se instaló y ejecutar los comandos con root.
+
+1) Crear la ruta /var/centos_local_repo/, con root y el comando:
+            [root@0x00000 ~]# mkdir /var/centos_local_repo/
+
+
+2) Copiar los archivos rpm desde el DVD a /var/centos_local_repo/
+    Por lo regular el DVD se monta en /media/, en caso de que no se monte de manera automática, hacer el inciso a, para
+    usar un iso hacer el punto b y para continuar con la copia de los archivos hacer el inciso c.
+    a) para montar el disco se puede realizar el comando:
+            [root@0x00000 ~]# mkdir /media/dvd
+              [root@0x00000 ~]# mount -t iso9660 /dev/dvd /media/dvd
+            ir al inciso c.
+    b) para montar un iso con el comando:
+            [root@0x00000 ~]# makdir /media/iso
+            [root@0x00000 ~]# mount -t iso9660 -o loop /ruta_imagen/nombre_del_iso.iso /media/iso
+            ir al inciso c.
+    c) una vez con el disco montado se puede copiar los archivos rpm, para algunas versiones la carpeta es Packages.
+            [root@0x00000 ~]# cp /media/ruta_de_los_rpms/*.rpm /var/centos_local_repo/
+
+3) instalar el rpm createrepo
+moverse a /var/centos_local_repo/ e instalar el paquete createrepo.
+            [root@0x00000 ~]# cd /var/centos_local_repo/
+            Requerimientos python, python(abi), python-deltarpm estos se pueden encontrar en el mismo disco y se pueden instalar con el comando:rpm -ivh      
+            Instalar el paquete (Se utiliza el comodín * para hacer un comando genérico):
+            [root@0x00000 ~]# rpm -ivh    createrepo*
+            En caso de no tener instaladas las dependencias se lanzara un mensaje indicando cuales son las que faltan.
+4)Crear el repositorio con el siguiente comando (es necesario esperar a que el comando termine de agregar cada paquete):
+            [root@0x00000 ~]# createrepo /var/centos_local_repo/
+5)Para habilitar el repositorio creado es necesario modificar el archivo /etc/yum.repos.d/CentOS-Base.repo y
+en donde se encuentre enabled=1 cambiar por enabled=0 con el fin de no causar problemas en caso de no tener Internet. 
+Es necesario agregar las siguientes lineas al archivo /etc/yum.repos.d/CentOS-Base.repo (de preferencia al inicio del archivo).
+[repo-local]
+Name=repo-local
+baseurl=file:///var/centos_local_repo
+enabled=1 
+gpgcheck=0
+
+6) Para comprobar que se haya agregado el repositorio es necesario ejecutar el siguiente comando:
+root@servicios [~]# yum repolist
+repo-local
+root@servicios [~]# yum list
+El comando anterior debe de mostrar la lista de todos los paquetes en el repositorio y algunos instalados, es necesario probar instalando
+alguno de los programas con: yum install nombre_del_paquete
+
