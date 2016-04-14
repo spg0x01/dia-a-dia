@@ -1,0 +1,25 @@
+El archivo fue creado de la siguiente forma:
+[spg0x01@spg0x01sdk ~]$ sudo dd if=/dev/sdb of=/root/imagen_tarjeta_sd.img bs=4M
+Identificar particiones:
+[spg0x01@spg0x01sdk ~]$ sudo fdisk -l imagen_tarjeta_sd.img
+
+Disk imagen_tarjeta_sd.img: 3974 MB, 3974103040 bytes, 7761920 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0xa6202af7
+
+                      Device Boot      Start         End      Blocks   Id  System
+imagen_tarjeta_sd.img1   *        2048      104447       51200    c  W95 FAT32 (LBA)
+imagen_tarjeta_sd.img2          104448    15130623     7513088   83  Linux
+
+
+No quiero montar la partición del boot (imagen_tarjeta_sd.img1), así que sólo montaré la partición de datos/sistema:
+
+[spg0x01@spg0x01sdk ~]$ sudo mount -o loop,offset=53477376,ro imagen_tarjeta_sd.img /mnt/disk1
+
+El valor del offset se calcula de la siguiente forma:
+Units = sectors of 1 * 512 = 512 bytes, por lo tanto: 104448×512  = 53477376
+
+Nota: puede agregar el parámetro -t al comando mount para definir ext3, ext4, etc.
