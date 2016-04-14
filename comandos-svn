@@ -1,0 +1,8 @@
+Crear carpeta: 
+$ svn mkdir -m "se crea, carpeta" https://192.168.0.50/repos/carpeta_a_crear
+
+Agregar carpeta con archivos al repositorio:  
+$ svn import -m 'Pruebas estres pepsico' carpeta_a_agregar https://192.168.0.50/repos/carpeta_a_agregar
+
+Eliminar archivo o carpeta:
+$ svn delete -m "Eliminar archivo" https://192.168.0.50/repos/rutas_10.txt
