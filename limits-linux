@@ -1,0 +1,13 @@
+#maximum allowable number of processes avalilable to the user:
+ulimit -u 
+#maximum allowable open file descriptors 
+ulimit -n 
+#show all limits
+ulimit -a 
+#change limit of max number of proceesses (for this Terminal session)
+ulimit -u 20000
+#change the maximum allowable number of open file descriptors (for this Terminal session)
+ulimit -n 20000
+#if you wanna make this change permanent, modify the file /etc/security/limits.conf
+#For more information about it:
+#https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/5/html/Tuning_and_Optimizing_Red_Hat_Enterprise_Linux_for_Oracle_9i_and_10g_Databases/chap-Oracle_9i_and_10g_Tuning_Guide-Setting_Shell_Limits_for_the_Oracle_User.html
