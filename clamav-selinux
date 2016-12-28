@@ -1,0 +1,28 @@
+-----------Problem----------- 
+# sealert -l lookupid--xyz
+
+Summary:
+
+SELinux is preventing clamd (clamd_t) "execmem" to <Unknown> (clamd_t).
+
+Detailed Description:
+
+[......]
+
+SELinux denied access requested by clamd. It is not expected that this access is
+required by clamd and this access may signal an intrusion attempt. It is also
+possible that the specific version or configuration of the application is
+causing it to require additional access.
+
+ -----------Solution----------- 
+# grep clamd /var/log/audit/audit.log | audit2allow -M clamdav
+# cat clamdav.te 
+
+module clamdav 1.0;
+
+require {
+	type clamd_t;
+	class process execmem;
+}
+
+# semodule -i clamdav.pp
