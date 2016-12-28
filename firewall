@@ -1,0 +1,15 @@
+RHEL 7
+The following rules allow the entrance to the server from any IP address (public-private) to the specified ports
+
+#add apache port 
+firewall-cmd --zone=public --add-port=http/tcp --permanent
+
+#specific port  8081
+firewall-cmd --zone=public --add-port=8081/tcp --permanent
+
+#restart service 
+systemctl restart firewalld.service
+
+#show allowed ports
+firewall-cmd --zone=public --list-all
+
